@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<script id="personTemplate" type="text/template">
+		<em><%= name %></em> (<%= age %>) -- <%= occupation %>
+	</script>
+	<script src="../dependencies/underscore.js"></script>
+	<script src="../dependencies/jquery.js"></script>
+	<script src="../dependencies/backbone.js"></script>
+	<script>
+		var Person = Backbone.Model.extend({
+			defaults: {
+				name: 'John Doe',
+				age: 30,
+				occupation: 'worker'
+			}
+		});
+
+		var PersonView = Backbone.View.extend({
+			tagName: 'li',
+
+			// className: 'people',
+
+			// id: 'person'
+			//use the underscore library
+			//this time we use the external template
+			template: _.template($('#personTemplate').html()),
+
+			initialize: function () {
+				// console.log('Hi there!');
+				this.render();
+			},
+
+			render: function () {
+				// this.$el.html(this.model.get('name') + ' (' + this.model.get('age') + ') - ' + this.model.get('occupation'));
+
+				this.$el.html(this.template( this.model.toJSON()) );
+			}
+		});
+
+		var person = new Person();
+		var personview = new PersonView({ model: person});
+	</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<script src="../dependencies/underscore.js"></script>
+	<script src="../dependencies/jquery.js"></script>
+	<script src="../dependencies/backbone.js"></script>
+	<script>
+		var Person = Backbone.Model.extend({
+			defaults: {
+				name: 'Thomas',
+				age: 22,
+				occupation: 'student'
+			},
+
+			validate: function (attrs) {
+				if (attrs.age < 0) {
+					return 'Age must be positive, stupid.';
+				}
+
+				if (!attrs.name) {
+					return 'Name must not be empty.';
+				}
+			},
+
+			work: function () {
+				return this.get('name') + ' is working.';
+			},
+		});
+
+		var person = new Person();
+		console.log(person.toJSON());
+		console.log(person.get('name'))
+		person.set('name', '');	//false
+	</script>
+</body>
+</html>
