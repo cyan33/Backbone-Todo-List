@@ -48,3 +48,9 @@ input[type=text] {
 	width: 85%;
 	height: 40px;
 }
+
+.topic {
+	font-size: 40px;
+	font-weight: 600;
+	margin: 40px 0 40px 0;
+}
