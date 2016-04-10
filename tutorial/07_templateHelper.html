@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<script id="personTemplate" type="text/template">
+		<em><%= name %></em> (<%= age %>) -- <%= occupation %>
+	</script>
+	<script src="../dependencies/underscore.js"></script>
+	<script src="../dependencies/jquery.js"></script>
+	<script src="../dependencies/backbone.js"></script>
+	<script>
+		(function (){
+			window.App = {
+				window.App.Models: {},
+				window.App.Views: {},
+				window.App.Collections: {}
+			
+				window.helper.template: function (id) {
+					return _.template($('#' + id).html());
+				};
+			};
+		})();
+		
+
+		App.Models.Person = Backbone.Model.extend({
+			defaults: {
+				name: '',
+				age: 22,
+				occupation: ''
+			}
+		});
+
+		App.Views.Person = Backbone.View.extend({
+			tagName: 'li',
+
+			template: template('personTemplate'),
+
+			render: function (){
+				this.$el.html(this.template(this.model.toJSON()));
+
+				return this;
+			}
+		});
+
+		App.Collections.People = Backbone.Collection.extend({
+			model: Person
+		});
+
+		var peopleCollection = new App.Collections.People([
+			{
+				name: 'Jenny',
+				age: 22,
+				occupation: 'writer'
+			},
+			{
+				name: 'Tony',
+				age: 19,
+				occupation: 'student'
+			},
+			{
+				name: 'TaoWu',
+				age: 40,
+				occupation: 'Senior developer'
+			},
+		]);
+
+		App.Views.People = Backbone.View.extend({
+			tagName: 'ul',
+
+			render: function (){
+				this.collection.each(function (person){
+					var personView = new App.Views.Person({ model: person });
+					this.$el.append(personView.render().el);
+				}, this);
+
+				return this;
+			}
+		});
+
+		var peopleView = new App.Views.People({ collection: peopleCollection });
+
+		$(document.body).append(peopleView.render().el);
+	</script>
+</body>
+</html>

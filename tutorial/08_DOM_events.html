@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<h2>My Tasks</h2>
+	<div class="items"></div>
+	<script type="text/template" id="taskTemplate">
+		<span><%= title %></span> (<%= priority %>) <button class="edit">Edit</button><button class="delete">Delete</button>
+	</script>
+	<script src="../dependencies/underscore.js"></script>
+	<script src="../dependencies/jquery.js"></script>
+	<script src="../dependencies/backbone.js"></script>
+	<script>
+		(function (){
+			window.App = {
+				Models: {},
+				Views: {},
+				Collections: {},
+			
+				template: function (id){
+					return _.template($('#' + id).html());
+				}
+			};
+		
+			App.Models.Task = Backbone.Model.extend({});
+
+			App.Views.Task = Backbone.View.extend({
+				tagName: 'li',
+
+				template: App.template('taskTemplate'),
+
+				initialize: function (){
+					this.model.on('change:title', this.render, this);
+					this.model.on('destroy', this.remove, this);
+				},
+
+				'events': {
+					'click .edit': 'editTag',
+					'click .delete': 'destroy'
+				},
+
+				editTag: function (){
+					var newTask = prompt('Change the previous task:', this.model.get('title'));
+
+					if(!$.trim(newTask))	return;
+
+					this.model.set('title', newTask);
+				},
+
+				destroy: function (){
+					this.model.destroy();
+				},
+
+				remove: function (){
+					this.$el.remove();
+				},
+
+				render: function (){
+					var template = this.template(this.model.toJSON());
+					this.$el.html(template);
+
+					return this;
+				}	
+			});
+
+			App.Collections.Tasks = Backbone.Collection.extend({
+				model: App.Models.Task
+			});
+
+			App.Views.Tasks = Backbone.View.extend({
+				tagName: 'ul',
+
+				render: function (){
+					this.collection.each(this.addOne, this);
+
+					return this;
+				},
+
+				addOne: function (task){
+					//map through each of taskk in the collection
+					var taskView = new App.Views.Task({ model: task });
+					
+					//append each to the root element('ul')
+					this.$el.append(taskView.render().el);
+				}
+			});
+
+			window.tasksCollection = new App.Collections.Tasks([
+				{
+					title: 'Go to work',
+					priority: 5
+				},
+				{
+					title: 'Sleep',
+					priority: 4
+				},
+				{
+					title: 'Gym',
+					priority: 2
+				},
+			]);
+
+			var tasksView = new App.Views.Tasks({ collection: tasksCollection });
+
+			$('.items').append(tasksView.render().el);
+
+		})();
+	</script>
+</body>
+</html>

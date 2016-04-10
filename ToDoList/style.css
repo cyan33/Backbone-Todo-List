@@ -1,0 +1,50 @@
+.wrapper {
+	width: 50%;
+	margin: 0 auto;
+}
+
+ul {
+	padding: 0;
+}
+
+li{
+	margin: 15px 0;
+	padding: 5px;
+	list-style: none;
+}
+
+li span {
+	font-size: 20px;
+	padding-bottom: 5px;
+	width: 80%;
+	border-bottom: 1px solid #d8ddd9;
+	display: inline-block;
+}
+
+li:last-child {
+	border: none;
+}
+
+button {
+	float: right;
+	margin-right: 5px;
+}
+
+.delete {
+	background-image: -webkit-linear-gradient(top,#d9534f 0,#c12e2a 100%);
+	font-weight: 500;
+}
+
+.edit {
+	background-image: -webkit-linear-gradient(top,#5cb85c 0,#419641 100%);
+}
+
+input[type=submit] {
+	float: right;
+	background-image: -webkit-linear-gradient(top,#fff 0,#e0e0e0 100%);
+}
+
+input[type=text] {
+	width: 85%;
+	height: 40px;
+}
