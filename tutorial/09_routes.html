@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+	<script id="appointmentTemplate" type="text/template">
+		<b>Appointment</b> -- (<%= id %>)
+	</script>
+	<script src="../dependencies/underscore.js"></script>
+	<script src="../dependencies/jquery.js"></script>
+	<script src="../dependencies/backbone.js"></script>
+	<script>
+		(function () {
+			window.App = {
+				Models: {},
+				Views: {},
+				Collections: {},
+				Router: {},
+
+				template: function (id){
+					return _.template($('#' + id).html());
+				}
+			};
+
+			var vent = _.extend({}, Backbone.Events);
+
+			App.Models.Appointment = Backbone.Model.extend({ });
+
+			App.Views.Appointment = Backbone.View.extend({
+				tagName: 'li',
+
+				initialize: function () {
+					vent.on('appointment:show', this.show, this);
+				},
+
+				template: App.template('appointmentTemplate'),
+
+				render: function () {
+					this.$el.html(this.template(this.model.toJSON()));
+
+					return this;
+				},
+
+				show: function (id) {
+					var appointment = new App.Models.Appointment({ 'id': id });
+					var appointmentView = new App.Views.Appointment({ model: appointment });
+
+					$(document.body).append(appointmentView.render().el);
+				}
+			});
+
+			App.Router = Backbone.Router.extend({
+				routes: {
+					'': 'index',
+					'appointment/:id': 'showAppointment'
+				},
+
+				index: function () {
+					console.log('Hi there from index');
+				},
+
+				showAppointment: function (appointmentId) {
+					vent.trigger('appointment:show', appointmentId);
+				}
+			});
+
+			new App.Views.Appointment({ model: App.Models.Appointment });
+			new App.Router();
+			Backbone.history.start();
+		})();
+	</script>
+</body>
+</html>
