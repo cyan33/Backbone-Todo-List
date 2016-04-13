@@ -4,4 +4,8 @@
    
    Note that I was inspired by a tutorial section on youtube.com called 'tutsplus'. I think you should definitely go see it.
    
+   The page after you download and open should look like this:
+   
+   ![QQ图片20160413153235.png](https://ooo.0o0.ooo/2016/04/13/570df706d8339.png)
+   
    Good luck!
