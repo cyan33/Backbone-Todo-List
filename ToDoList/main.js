@@ -104,7 +104,7 @@
 		}
 	});
 
-	window.tasksCollection = new App.Collections.Tasks([
+	var tasksCollection = new App.Collections.Tasks([
 		{
 			title: 'Go to work',
 		},
